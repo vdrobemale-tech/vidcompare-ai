@@ -8,8 +8,7 @@ setuptools>=65.0
 langchain==0.3.25
 langchain-google-genai==2.1.4
 langchain-community==0.3.24
-langchain-chroma==1.1.0
-# ChromaDB
+# ChromaDB (direct - no langchain-chroma wrapper)
 chromadb==1.3.5
 # Google
 google-generativeai==0.8.5
