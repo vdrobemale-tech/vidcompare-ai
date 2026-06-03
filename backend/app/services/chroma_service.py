@@ -1,5 +1,5 @@
 import chromadb
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import Chroma
 from app.services.embedding_service import get_embeddings
 from app.core.config import settings
 from app.core.logging import setup_logger
