@@ -1,8 +1,8 @@
 fastapi==0.111.0
 uvicorn==0.29.0
 python-dotenv==1.0.1
-pydantic==2.7.1
-pydantic-settings==2.2.1
+pydantic==2.10.0
+pydantic-settings==2.6.0
 setuptools>=65.0
 # LangChain
 langchain==0.3.25
