@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-0: #0d0f14;
+  --bg-1: #13161e;
+  --bg-2: #1a1e2a;
+  --bg-3: #222736;
+  --border: rgba(255, 255, 255, 0.07);
+  --brand: #4f6ef7;
+  --brand-glow: rgba(79, 110, 247, 0.25);
+  --text-primary: #e8ecf4;
+  --text-secondary: #8892a4;
+  --text-muted: #55607a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background: var(--bg-0);
+  color: var(--text-primary);
+  font-family: "DM Sans", sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-1); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+
+/* Glass card */
+.glass {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+/* Brand glow button */
+.btn-brand {
+  background: var(--brand);
+  box-shadow: 0 0 24px var(--brand-glow);
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.btn-brand:hover {
+  box-shadow: 0 0 40px var(--brand-glow);
+  transform: translateY(-1px);
+}
+.btn-brand:active {
+  transform: translateY(0);
+}
+
+/* Input */
+.input-dark {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-dark:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+/* Markdown styles */
+.markdown h1, .markdown h2, .markdown h3 {
+  font-family: "Space Grotesk", sans-serif;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+.markdown p { margin-bottom: 0.75rem; line-height: 1.7; }
+.markdown ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+.markdown li { margin-bottom: 0.25rem; }
+.markdown strong { color: #a0b0ff; }
+.markdown code {
+  font-family: "JetBrains Mono", monospace;
+  background: var(--bg-3);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
