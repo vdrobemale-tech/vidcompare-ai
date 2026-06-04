@@ -1,12 +1,11 @@
 import os
 import yt_dlp
-import whisper
+from faster_whisper import WhisperModel
 from app.core.logging import setup_logger
 from app.core.constants import DOWNLOADS_DIR, WHISPER_MODEL
 from app.utils.helper import seconds_to_duration, safe_int, ensure_dir
 
 logger = setup_logger(__name__)
-
 
 def get_instagram_metadata(url: str) -> dict:
     logger.info(f"Fetching Instagram metadata for: {url}")
@@ -37,11 +36,9 @@ def get_instagram_metadata(url: str) -> dict:
         "source": "instagram",
     }
 
-
 def get_instagram_transcript(url: str) -> str:
     logger.info(f"Transcribing Instagram reel: {url}")
     ensure_dir(DOWNLOADS_DIR)
-
     audio_path = os.path.join(DOWNLOADS_DIR, "instagram_audio.mp3")
 
     ydl_opts = {
@@ -63,9 +60,11 @@ def get_instagram_transcript(url: str) -> str:
             ydl.download([url])
 
         logger.info("Audio downloaded, starting Whisper transcription...")
-        model = whisper.load_model(WHISPER_MODEL)
-        result = model.transcribe(audio_path)
-        transcript = result.get("text", "")
+
+        model = WhisperModel(WHISPER_MODEL, device="cpu", compute_type="int8")
+        segments, _ = model.transcribe(audio_path)
+        transcript = " ".join([seg.text for seg in segments]).strip()
+
         logger.info(f"Transcription done — {len(transcript)} chars")
 
         # Cleanup audio file
