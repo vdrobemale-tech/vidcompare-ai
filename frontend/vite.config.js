@@ -12,4 +12,12 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: "dist",
+  },
+  define: {
+    "import.meta.env.VITE_API_BASE_URL": JSON.stringify(
+      process.env.VITE_API_BASE_URL || "https://vidcompare-ai-1.onrender.com"
+    ),
+  },
 });
