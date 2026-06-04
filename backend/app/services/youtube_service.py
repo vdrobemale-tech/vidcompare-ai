@@ -12,9 +12,14 @@ def get_youtube_metadata(url: str) -> dict:
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,
-        "extractor_args": {"youtube": {"player_client": ["android"]}},
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["web", "android"],
+                "player_skip": ["webpage", "configs"],
+            }
+        },
         "http_headers": {
-            "User-Agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 Chrome/90.0.4430.91 Mobile Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36"
         },
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
