@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     CHUNK_SIZE: int = 1000
     CHUNK_OVERLAP: int = 200
     MAX_RETRIEVAL_DOCS: int = 6
-    CORS_ORIGINS: str = "http://localhost:5173"
+    CORS_ORIGINS: str = "https://vidcompare-ai.vercel.app"
 
     @property
     def cors_origins_list(self) -> List[str]:
