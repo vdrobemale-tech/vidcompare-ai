@@ -6,13 +6,16 @@ from app.utils.helper import seconds_to_duration, safe_int
 
 logger = setup_logger(__name__)
 
-
 def get_youtube_metadata(url: str) -> dict:
     logger.info(f"Fetching YouTube metadata for: {url}")
     ydl_opts = {
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,
+        "extractor_args": {"youtube": {"player_client": ["android"]}},
+        "http_headers": {
+            "User-Agent": "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 Chrome/90.0.4430.91 Mobile Safari/537.36"
+        },
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
@@ -33,7 +36,6 @@ def get_youtube_metadata(url: str) -> dict:
         "thumbnail_url": info.get("thumbnail", ""),
         "source": "youtube",
     }
-
 
 def get_youtube_transcript(url: str) -> str:
     logger.info(f"Fetching YouTube transcript for: {url}")
