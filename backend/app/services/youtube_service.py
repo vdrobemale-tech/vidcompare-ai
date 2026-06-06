@@ -24,6 +24,8 @@ def get_youtube_metadata(url: str) -> dict:
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,
+        "noplaylist": True,
+        "format": "best/bestvideo+bestaudio",
     }
     if cookies_file:
         ydl_opts["cookiefile"] = cookies_file
