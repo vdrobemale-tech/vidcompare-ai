@@ -1,38 +1,41 @@
 import os
 import tempfile
+import yt_dlp
+from youtube_transcript_api import YouTubeTranscriptApi
+from app.core.logging import setup_logger
+from app.utils.video_parser import extract_youtube_id
+from app.utils.helper import seconds_to_duration, safe_int
+
+logger = setup_logger(__name__)
+
+def _get_cookies_file():
+    cookies_content = os.getenv("YOUTUBE_COOKIES")
+    if not cookies_content:
+        return None
+    tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False)
+    tmp.write(cookies_content)
+    tmp.close()
+    return tmp.name
 
 def get_youtube_metadata(url: str) -> dict:
     logger.info(f"Fetching YouTube metadata for: {url}")
-    
-    # Cookies env se temp file mein likho
-    cookies_content = os.getenv("YOUTUBE_COOKIES")
-    cookies_file = None
-    
-    if cookies_content:
-        tmp = tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False)
-        tmp.write(cookies_content)
-        tmp.close()
-        cookies_file = tmp.name
-
+    cookies_file = _get_cookies_file()
     ydl_opts = {
         "quiet": True,
         "no_warnings": True,
         "skip_download": True,
     }
-    
     if cookies_file:
         ydl_opts["cookiefile"] = cookies_file
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=False)
-    
-    # Temp file delete karo
+
     if cookies_file:
         os.unlink(cookies_file)
 
     tags = info.get("tags") or []
     hashtags = [f"#{tag}" for tag in tags[:10]]
-
     return {
         "title": info.get("title", "Unknown Title"),
         "creator": info.get("uploader", "Unknown Creator"),
@@ -46,3 +49,15 @@ def get_youtube_metadata(url: str) -> dict:
         "thumbnail_url": info.get("thumbnail", ""),
         "source": "youtube",
     }
+
+def get_youtube_transcript(url: str) -> str:
+    logger.info(f"Fetching YouTube transcript for: {url}")
+    video_id = extract_youtube_id(url)
+    try:
+        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript = " ".join([entry["text"] for entry in transcript_list])
+        logger.info(f"Transcript fetched — {len(transcript)} chars")
+        return transcript
+    except Exception as e:
+        logger.warning(f"Transcript fetch failed: {e}")
+        return ""
