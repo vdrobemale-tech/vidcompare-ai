@@ -14,7 +14,7 @@ def get_youtube_metadata(url: str) -> dict:
         "skip_download": True,
         "extractor_args": {
             "youtube": {
-                "player_client": ["tv_embedded"],
+                "player_client": ["android"],  # ← changed from tv_embedded
             }
         },
     }
